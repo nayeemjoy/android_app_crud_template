@@ -4,9 +4,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.joyapp.apptemplate.adapter.HomeListAdapter;
+import com.joyapp.apptemplate.model.Group;
+import com.joyapp.apptemplate.rest.ApiClient;
+import com.joyapp.apptemplate.rest.ApiInterface;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -22,10 +36,13 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private static final String TAG = "INSTANT";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private HomeListAdapter homeListAdapter;
+    private ListView homeListView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,6 +82,27 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
+
+        homeListView = (ListView) view.findViewById(R.id.home_list_view);
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        Call<List<Group>> call = apiService.getAllGroups();
+
+        call.enqueue(new Callback<List<Group>>() {
+            @Override
+            public void onResponse(Call<List<Group>> call, Response<List<Group>> response) {
+                ArrayList<Group> groups =(ArrayList<Group>) response.body();
+                Log.d(TAG, "Ashse ");
+                homeListAdapter = new HomeListAdapter(getActivity(), groups);
+                homeListView.setAdapter(homeListAdapter);
+                Log.d(TAG, "Total Group Found : "+groups.size());
+            }
+
+            @Override
+            public void onFailure(Call<List<Group>> call, Throwable t) {
+                Log.d(TAG, "Failed  : "+t.getMessage());
+            }
+        });
         return view;
     }
 

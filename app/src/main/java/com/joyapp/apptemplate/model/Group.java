@@ -9,12 +9,25 @@ import java.util.List;
  */
 public class Group {
 
+    @SerializedName("id")
+    private String id;
     @SerializedName("name")
     private String name;
     @SerializedName("keywords")
     private List<Keyword> keywords;
-    public Group(String name) {
+
+    public Group(String id, String name, List<Keyword> keywords) {
+        this.id = id;
         this.name = name;
+        this.keywords = keywords;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -36,7 +49,8 @@ public class Group {
     @Override
     public String toString() {
         return "Group{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", keywords=" + keywords.toString() +
                 '}';
     }
