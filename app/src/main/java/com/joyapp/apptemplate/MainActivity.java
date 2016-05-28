@@ -17,15 +17,23 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.joyapp.apptemplate.adapter.NavDrawerListAdapter;
+import com.joyapp.apptemplate.model.Group;
 import com.joyapp.apptemplate.model.NavDrawerItem;
+import com.joyapp.apptemplate.rest.ApiClient;
+import com.joyapp.apptemplate.rest.ApiInterface;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
+    private String TAG = "INSTANT";
     // nav drawer title
     private CharSequence mDrawerTitle;
 
@@ -105,6 +113,27 @@ public class MainActivity extends AppCompatActivity {
                     // calling onPrepareOptionsMenu() to hide action bar icons
                     invalidateOptionsMenu();
                     Log.d("INSTANT", "Opened");
+                    ApiInterface apiService =
+                            ApiClient.getClient().create(ApiInterface.class);
+                    Call<List<Group>> call = apiService.getAllGroups();
+
+                    call.enqueue(new Callback<List<Group>>() {
+                        @Override
+                        public void onResponse(Call<List<Group>> call, Response<List<Group>> response) {
+                            List<Group> groups = response.body();
+                            for (Group group : groups){
+                              Log.d(TAG, "Group Info : " + group.toString());
+
+
+                            }
+                            Log.d(TAG, "Total Group Found : "+groups.size());
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Group>> call, Throwable t) {
+                            Log.d(TAG, "Failed  : "+t.getMessage());
+                        }
+                    });
                 }
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
