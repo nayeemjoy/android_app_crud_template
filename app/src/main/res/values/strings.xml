@@ -31,4 +31,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Facebook App ID-->
+    <string name="facebook_app_id">286508528363236</string>
+    <string name="fb_login_protocol_scheme">fb286508528363236</string>
 </resources>

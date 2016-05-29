@@ -10,6 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.joyapp.apptemplate.adapter.HomeListAdapter;
 import com.joyapp.apptemplate.model.Group;
 import com.joyapp.apptemplate.rest.ApiClient;
@@ -17,6 +23,8 @@ import com.joyapp.apptemplate.rest.ApiInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLSession;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +53,7 @@ public class HomeFragment extends Fragment {
     private ListView homeListView;
 
     private OnFragmentInteractionListener mListener;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -81,7 +90,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
+
+
 
         homeListView = (ListView) view.findViewById(R.id.home_list_view);
         ApiInterface apiService =
