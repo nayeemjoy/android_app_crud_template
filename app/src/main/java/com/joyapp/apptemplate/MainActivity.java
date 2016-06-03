@@ -1,5 +1,9 @@
 package com.joyapp.apptemplate;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -8,6 +12,7 @@ import android.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +21,21 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.joyapp.apptemplate.adapter.NavDrawerListAdapter;
 import com.joyapp.apptemplate.model.Group;
 import com.joyapp.apptemplate.model.NavDrawerItem;
 import com.joyapp.apptemplate.rest.ApiClient;
 import com.joyapp.apptemplate.rest.ApiInterface;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = "INSTANT";
     // nav drawer title
     private CharSequence mDrawerTitle;
-
     // used to store app title
     private CharSequence mTitle;
 
@@ -50,6 +63,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.joyapp.apptemplate",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d(TAG+"D", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+
+
         setContentView(R.layout.activity_main);
 
 //        getSupportActionBar().setTitle("JOY");
@@ -115,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("INSTANT", "Opened");
                 }
         };
+        displayView(0);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         Log.d("INSTANT", "Toggle Added Setup Added");
     }
@@ -189,9 +221,13 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new HomeFragment();
                 break;
             case 1:
-                fragment = new FindPeopleFragment();
+                Intent i =  new Intent(this, LoginActivity.class);
+                startActivity(i);
                 break;
+//                fragment = new FindPeopleFragment();
+//                break;
             case 2:
+
                 fragment = new PhotoFragment();
                 break;
             case 3:
@@ -207,8 +243,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
-        Log.d("INSTANT", fragment.toString());
-//        return;
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
@@ -220,7 +254,8 @@ public class MainActivity extends AppCompatActivity {
             mDrawerLayout.closeDrawer(mDrawerList);
         } else {
             // error in creating fragment
-            Log.e("MainActivity", "Error in creating fragment");
+            Log.d(TAG, "Error in creating fragment");
         }
     }
+
 }

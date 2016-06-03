@@ -1,12 +1,18 @@
 package com.joyapp.apptemplate;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 
 /**
@@ -28,6 +34,8 @@ public class PhotoFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private NotificationCompat.Builder notification;
 
     public PhotoFragment() {
         // Required empty public constructor
@@ -61,10 +69,30 @@ public class PhotoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo, container, false);
+        View view =  inflater.inflate(R.layout.fragment_photo, container, false);
+        notification = new NotificationCompat.Builder(getActivity());
+        Button button = (Button) view.findViewById(R.id.notification_button);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                notification.setSmallIcon(R.drawable.ic_launcher);
+                notification.setTicker("This is a Notification");
+                notification.setWhen(System.currentTimeMillis());
+                notification.setContentTitle("Here Is the Title");
+                notification.setContentText("I am the Body");
+
+                Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+                Toast.makeText(getActivity().getApplicationContext(),"Hey Notification",Toast.LENGTH_SHORT).show();
+                notification.setContentIntent(pendingIntent);
+                NotificationManager nm = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.notify(12343234, notification.build());
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
