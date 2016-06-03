@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.d("YourKeyHash :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                Log.d(TAG+"D", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
 
@@ -221,14 +221,15 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new HomeFragment();
                 break;
             case 1:
-                fragment = new FindPeopleFragment();
-                break;
-            case 2:
                 Intent i =  new Intent(this, LoginActivity.class);
                 startActivity(i);
                 break;
-//                fragment = new PhotoFragment();
+//                fragment = new FindPeopleFragment();
 //                break;
+            case 2:
+
+                fragment = new PhotoFragment();
+                break;
             case 3:
                 fragment = new CommunityFragment();
                 break;
