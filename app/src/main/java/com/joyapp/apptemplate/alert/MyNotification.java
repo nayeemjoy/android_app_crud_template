@@ -17,18 +17,18 @@ import com.joyapp.apptemplate.R;
  */
 public class MyNotification {
     private NotificationCompat.Builder notification;
-    private Activity activity;
+    private Context context;
     private NotificationManager nm;
     private Intent i;
 
     private PendingIntent pendingIntent;
-    public MyNotification(Activity activity) {
-        this.activity = activity;
-        this.notification = new NotificationCompat.Builder(activity);
-        this.i = new Intent(activity.getApplicationContext(), MainActivity.class);
-        this.pendingIntent = PendingIntent.getActivity(activity, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+    public MyNotification(Context context) {
+        this.context = context;
+        this.notification = new NotificationCompat.Builder(context);
+        this.i = new Intent(context, MainActivity.class);
+        this.pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         this.notification.setContentIntent(pendingIntent);
-        nm = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     public void pushNotification(String title, String body, int id_number){
