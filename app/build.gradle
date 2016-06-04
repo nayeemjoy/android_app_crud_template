@@ -33,4 +33,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     // Android Facebook Sdk
     compile 'com.facebook.android:facebook-android-sdk:4.+'
+    // GCM Dependencies
+    compile 'com.google.android.gms:play-services:8.1.0'
 }

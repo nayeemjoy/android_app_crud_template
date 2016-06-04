@@ -33,6 +33,7 @@ import com.joyapp.apptemplate.model.Group;
 import com.joyapp.apptemplate.model.NavDrawerItem;
 import com.joyapp.apptemplate.rest.ApiClient;
 import com.joyapp.apptemplate.rest.ApiInterface;
+import com.joyapp.apptemplate.service.PushNotificationService;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
-
+        PushNotificationService.activity = this;
 //        getSupportActionBar().setTitle("JOY");
         Log.d("INSTANT", "MainActivity Starting");
         mTitle = mDrawerTitle = getTitle();
