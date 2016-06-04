@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.joyapp.apptemplate.alert.MyNotification;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,23 +75,12 @@ public class PhotoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_photo, container, false);
-        notification = new NotificationCompat.Builder(getActivity());
         Button button = (Button) view.findViewById(R.id.notification_button);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                notification.setSmallIcon(R.drawable.ic_launcher);
-                notification.setTicker("This is a Notification");
-                notification.setWhen(System.currentTimeMillis());
-                notification.setContentTitle("Here Is the Title");
-                notification.setContentText("I am the Body");
-
-                Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-                Toast.makeText(getActivity().getApplicationContext(),"Hey Notification",Toast.LENGTH_SHORT).show();
-                notification.setContentIntent(pendingIntent);
-                NotificationManager nm = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-                nm.notify(12343234, notification.build());
+                MyNotification mnotify = new MyNotification(getActivity());
+                mnotify.pushNotification("HEY TITLE", "HEY BODY", 132435);
             }
         });
         return view;
