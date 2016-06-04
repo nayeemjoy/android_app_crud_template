@@ -16,7 +16,7 @@ public class PushNotificationService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         String mesaage = data.getString("message");
 
-        MyNotification myNotification = new MyNotification(activity);
+        MyNotification myNotification = new MyNotification(this);
         myNotification.pushNotification(mesaage,mesaage,123456);
         Log.d("INSTANT", mesaage);
 
